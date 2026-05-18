@@ -3,155 +3,225 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>在线抓阄抽人</title>
+  <title>抓阄抽人</title>
   <style>
     * { box-sizing: border-box; }
-    body { margin: 0; min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; background: linear-gradient(135deg, #f7f4ff, #eef7ff); color: #111827; display: flex; align-items: center; justify-content: center; padding: 24px; }
-    .card { width: min(720px, 100%); background: rgba(255,255,255,.93); border-radius: 28px; box-shadow: 0 24px 60px rgba(79,70,229,.16); padding: 32px; }
-    h1 { margin: 0 0 8px; font-size: 34px; text-align: center; }
-    .subtitle { margin: 0 0 26px; color: #6b7280; text-align: center; line-height: 1.7; }
-    .section { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 22px; padding: 20px; margin-top: 16px; }
-    .section-title { font-size: 18px; font-weight: 800; margin-bottom: 12px; }
-    input { width: 100%; padding: 14px 16px; border: 1px solid #d1d5db; border-radius: 16px; font-size: 16px; outline: none; margin-bottom: 12px; }
-    input:focus { border-color: #7c3aed; box-shadow: 0 0 0 4px rgba(124,58,237,.12); }
-    button { width: 100%; border: 0; border-radius: 18px; padding: 15px 18px; font-size: 16px; font-weight: 800; cursor: pointer; color: white; background: linear-gradient(135deg,#7c3aed,#2563eb); box-shadow: 0 12px 24px rgba(37,99,235,.22); }
-    button.secondary { margin-top: 10px; color: #4f46e5; background: #eef2ff; box-shadow: none; }
-    button.danger { margin-top: 10px; background: linear-gradient(135deg,#ef4444,#f97316); }
-    .link-box { padding: 14px; border-radius: 16px; background: #fff; border: 1px dashed #a78bfa; color: #4c1d95; word-break: break-all; line-height: 1.6; margin-bottom: 12px; }
-    .participants { display: grid; grid-template-columns: repeat(auto-fit,minmax(130px,1fr)); gap: 10px; margin-top: 12px; }
-    .person { padding: 12px; border-radius: 16px; background: #fff; border: 1px solid #e5e7eb; font-weight: 700; text-align: center; }
-    .result { display: grid; grid-template-columns: repeat(auto-fit,minmax(160px,1fr)); gap: 12px; margin-top: 14px; }
-    .winner { padding: 22px 12px; border-radius: 20px; background: #f5f3ff; border: 1px solid #ddd6fe; color: #5b21b6; font-size: 24px; font-weight: 900; text-align: center; animation: pop .35s ease; }
-    .muted { color: #6b7280; line-height: 1.7; font-size: 14px; }
-    .warning { background: #fff7ed; border: 1px solid #fed7aa; color: #9a3412; padding: 12px 14px; border-radius: 16px; margin-top: 12px; line-height: 1.6; font-size: 14px; }
-    .hidden { display: none; }
-    @keyframes pop { from { opacity:0; transform:translateY(8px) scale(.98); } to { opacity:1; transform:translateY(0) scale(1); } }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: linear-gradient(135deg, #f7f4ff, #eef7ff);
+      color: #111827;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .card {
+      width: min(680px, 100%);
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 28px;
+      box-shadow: 0 24px 60px rgba(79, 70, 229, 0.16);
+      padding: 28px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 32px;
+      text-align: center;
+    }
+
+    .subtitle {
+      margin: 0 0 20px;
+      color: #6b7280;
+      text-align: center;
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    .notice {
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      color: #9a3412;
+      padding: 12px 14px;
+      border-radius: 16px;
+      line-height: 1.6;
+      font-size: 14px;
+      margin-bottom: 18px;
+    }
+
+    .inputs {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid #d1d5db;
+      border-radius: 16px;
+      font-size: 16px;
+      outline: none;
+      background: #fff;
+    }
+
+    input:focus {
+      border-color: #7c3aed;
+      box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.12);
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 18px;
+      padding: 15px 18px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      color: white;
+      background: linear-gradient(135deg, #7c3aed, #2563eb);
+      box-shadow: 0 12px 24px rgba(37, 99, 235, 0.22);
+    }
+
+    button.secondary {
+      color: #4f46e5;
+      background: #eef2ff;
+      box-shadow: none;
+    }
+
+    .result-box {
+      margin-top: 22px;
+      padding: 20px;
+      border-radius: 22px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      min-height: 120px;
+    }
+
+    .result-title {
+      font-size: 18px;
+      font-weight: 900;
+      margin-bottom: 14px;
+      text-align: center;
+    }
+
+    .winner-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .winner {
+      padding: 24px 12px;
+      border-radius: 20px;
+      background: #f5f3ff;
+      border: 1px solid #ddd6fe;
+      color: #5b21b6;
+      font-size: 26px;
+      font-weight: 900;
+      text-align: center;
+      animation: pop 0.35s ease;
+    }
+
+    .empty {
+      color: #9ca3af;
+      text-align: center;
+      padding: 28px 0;
+      line-height: 1.7;
+    }
+
+    .all-names {
+      margin-top: 14px;
+      color: #6b7280;
+      font-size: 14px;
+      line-height: 1.7;
+      text-align: center;
+    }
+
+    @keyframes pop {
+      from { opacity: 0; transform: translateY(8px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @media (max-width: 520px) {
+      .card { padding: 22px; }
+      h1 { font-size: 28px; }
+      .buttons, .winner-list { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
   <main class="card">
-    <h1>在线抓阄抽人</h1>
-    <p class="subtitle">主持人创建抓阄链接，参与者打开链接报名；满 5 人后随机抽出 2 人。</p>
-    <div id="configWarning" class="warning hidden">还没有配置 Firebase。要让不同设备通过同一个链接参与，必须先配置在线数据库。</div>
-    <section id="hostPanel" class="section hidden">
-      <div class="section-title">主持人操作</div>
-      <button onclick="createRoom()">创建抓阄房间</button>
-      <div id="shareArea" class="hidden" style="margin-top:16px;">
-        <div class="muted">把这个链接发给 5 位参与者：</div>
-        <div id="shareLink" class="link-box"></div>
-        <button class="secondary" onclick="copyShareLink()">复制参与链接</button>
-      </div>
+    <h1>抓阄抽人</h1>
+    <p class="subtitle">输入 5 位参与者，随机抽出 2 人。</p>
+
+    <div class="notice">
+      这个版本不依赖 Firebase 或 Google 服务，国内网络更容易打开。参与者可以通过链接打开页面；主持人把 5 个人名字填进去后抽取。
+    </div>
+
+    <section class="inputs" aria-label="参与者名单">
+      <input id="name1" type="text" placeholder="参与者 1" />
+      <input id="name2" type="text" placeholder="参与者 2" />
+      <input id="name3" type="text" placeholder="参与者 3" />
+      <input id="name4" type="text" placeholder="参与者 4" />
+      <input id="name5" type="text" placeholder="参与者 5" />
     </section>
-    <section id="joinPanel" class="section hidden">
-      <div class="section-title">参与抓阄</div>
-      <input id="participantName" type="text" placeholder="请输入你的名字" />
-      <button onclick="joinRoom()">报名参与</button>
-      <p class="muted">每个房间最多 5 位参与者。参与者名单会实时同步。</p>
+
+    <section class="buttons">
+      <button onclick="drawLots()">开始抓阄</button>
+      <button class="secondary" onclick="resetPage()">清空重来</button>
     </section>
-    <section id="roomPanel" class="section hidden">
-      <div class="section-title">当前参与者 <span id="countText">0/5</span></div>
-      <div id="participants" class="participants"></div>
-      <button id="drawButton" class="danger hidden" onclick="drawLots()">满 5 人，开始抓阄</button>
-    </section>
-    <section id="resultPanel" class="section hidden">
-      <div class="section-title">抽中结果</div>
-      <div id="result" class="result"></div>
+
+    <section class="result-box">
+      <div class="result-title">抽中结果</div>
+      <div id="result" class="empty">结果会显示在这里</div>
+      <div id="allNames" class="all-names"></div>
     </section>
   </main>
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
-    import { getDatabase, ref, set, get, onValue, update } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-database.js";
 
-    const firebaseConfig = {
-      apiKey: "请替换为你的 apiKey",
-      authDomain: "请替换为你的 authDomain",
-      databaseURL: "请替换为你的 databaseURL",
-      projectId: "请替换为你的 projectId",
-      storageBucket: "请替换为你的 storageBucket",
-      messagingSenderId: "请替换为你的 messagingSenderId",
-      appId: "请替换为你的 appId"
-    };
+  <script>
+    function drawLots() {
+      const names = [1, 2, 3, 4, 5]
+        .map(i => document.getElementById(`name${i}`).value.trim())
+        .filter(Boolean);
 
-    const isConfigured = !firebaseConfig.apiKey.includes("请替换");
-    const $ = id => document.getElementById(id);
-    let app, db;
-    let roomId = new URLSearchParams(location.search).get("room");
-    let isHost = new URLSearchParams(location.search).get("host") === "1";
-    let currentRoom = null;
+      const uniqueNames = [...new Set(names)];
+      const result = document.getElementById("result");
+      const allNames = document.getElementById("allNames");
 
-    if (!isConfigured) {
-      $("configWarning").classList.remove("hidden");
-      $("hostPanel").classList.remove("hidden");
-    } else {
-      app = initializeApp(firebaseConfig);
-      db = getDatabase(app);
-      if (roomId) {
-        $("joinPanel").classList.remove("hidden");
-        $("roomPanel").classList.remove("hidden");
-        listenRoom();
-      } else {
-        $("hostPanel").classList.remove("hidden");
+      if (uniqueNames.length !== 5) {
+        result.className = "empty";
+        result.innerHTML = "请填写 5 个不重复的参与者名字。";
+        allNames.textContent = "";
+        return;
       }
+
+      const winners = shuffle(uniqueNames).slice(0, 2);
+
+      result.className = "winner-list";
+      result.innerHTML = winners
+        .map(name => `<div class="winner">🎉 ${escapeHTML(name)}</div>`)
+        .join("");
+
+      allNames.textContent = `本次参与者：${uniqueNames.join("、")}`;
     }
 
-    window.createRoom = async function () {
-      if (!isConfigured) return alert("请先配置 Firebase，配置后才能创建可分享的在线房间。");
-      roomId = Math.random().toString(36).slice(2, 10);
-      await set(ref(db, `rooms/${roomId}`), { createdAt: Date.now(), participants: {}, winners: [] });
-      const shareUrl = `${location.origin}${location.pathname}?room=${roomId}`;
-      const hostUrl = `${location.origin}${location.pathname}?room=${roomId}&host=1`;
-      $("shareLink").textContent = shareUrl;
-      $("shareArea").classList.remove("hidden");
-      history.replaceState(null, "", hostUrl);
-      isHost = true;
-      $("joinPanel").classList.remove("hidden");
-      $("roomPanel").classList.remove("hidden");
-      listenRoom();
-    };
-
-    window.copyShareLink = async function () {
-      await navigator.clipboard.writeText($("shareLink").textContent);
-      alert("参与链接已复制！");
-    };
-
-    window.joinRoom = async function () {
-      if (!isConfigured) return;
-      const name = $("participantName").value.trim();
-      if (!name) return alert("请输入名字");
-      const snapshot = await get(ref(db, `rooms/${roomId}`));
-      const room = snapshot.val();
-      if (!room) return alert("房间不存在，请确认链接是否正确。");
-      const names = Object.values(room.participants || {});
-      if (names.includes(name)) return alert("这个名字已经报名了，请换一个名字。");
-      if (names.length >= 5) return alert("这个房间已经满 5 人了。");
-      const participantId = Math.random().toString(36).slice(2, 10);
-      await set(ref(db, `rooms/${roomId}/participants/${participantId}`), name);
-      $("participantName").value = "";
-    };
-
-    window.drawLots = async function () {
-      if (!isConfigured || !currentRoom) return;
-      const names = Object.values(currentRoom.participants || {});
-      if (names.length !== 5) return alert("需要刚好 5 位参与者才能抽取。");
-      await update(ref(db, `rooms/${roomId}`), { winners: shuffle(names).slice(0, 2) });
-    };
-
-    function listenRoom() {
-      onValue(ref(db, `rooms/${roomId}`), snapshot => {
-        const room = snapshot.val();
-        currentRoom = room;
-        if (!room) { $("participants").innerHTML = `<div class="muted">房间不存在。</div>`; return; }
-        const names = Object.values(room.participants || {});
-        $("countText").textContent = `${names.length}/5`;
-        $("participants").innerHTML = names.length ? names.map(n => `<div class="person">${escapeHTML(n)}</div>`).join("") : `<div class="muted">还没有人报名。</div>`;
-        $("drawButton").classList.toggle("hidden", !(isHost && names.length === 5 && !(room.winners && room.winners.length)));
-        if (room.winners && room.winners.length) {
-          $("resultPanel").classList.remove("hidden");
-          $("result").innerHTML = room.winners.map(n => `<div class="winner">🎉 ${escapeHTML(n)}</div>`).join("");
-        } else {
-          $("resultPanel").classList.add("hidden");
-        }
+    function resetPage() {
+      [1, 2, 3, 4, 5].forEach(i => {
+        document.getElementById(`name${i}`).value = "";
       });
+      const result = document.getElementById("result");
+      result.className = "empty";
+      result.innerHTML = "结果会显示在这里";
+      document.getElementById("allNames").textContent = "";
     }
 
     function shuffle(array) {
@@ -164,7 +234,12 @@
     }
 
     function escapeHTML(text) {
-      return String(text).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\"/g,"&quot;").replace(/'/g,"&#039;");
+      return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/\"/g, "&quot;")
+        .replace(/'/g, "&#039;");
     }
   </script>
 </body>
